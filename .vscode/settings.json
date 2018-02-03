@@ -7,6 +7,19 @@
 		"libft.h": "c",
 		"iostream.h": "c",
 		"unistd.h": "c",
-		"sdl.h": "c"
+		"sdl.h": "c",
+		"algorithm": "c",
+		"locale": "c",
+		"ios": "c",
+		"quickcg.h": "c",
+		"iostream": "c",
+		"sdl_error.h": "c",
+		"string": "c",
+		"iomanip": "c",
+		"vector": "c",
+		"sstream": "c",
+		"sdl_filesystem.h": "c",
+		"cstdlib": "cpp",
+		"cmath": "cpp"
 	}
 }

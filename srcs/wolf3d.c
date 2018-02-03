@@ -5,56 +5,65 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: passef <passef@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/29 10:27:44 by passef            #+#    #+#             */
-/*   Updated: 2018/01/30 19:26:16 by passef           ###   ########.fr       */
+/*   Created: 2018/01/31 08:55:03 by passef            #+#    #+#             */
+/*   Updated: 2018/02/02 17:04:10 by passef           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/wolf3d.h"
 
-int main (void)
+t_env	*init_e(void)
 {
-    SDL_Window* window = NULL;
-    window = SDL_CreateWindow
-    (
-        "Jeu de la vie", SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        640,
-        480,
-        SDL_WINDOW_SHOWN
-    );
+	t_env	*e;
+	
+	if (!(e = malloc(sizeof(*e))))
+		return (NULL);
+	e->mlx_ptr = NULL;
+	e->mlx_win = NULL;
+	e->w_screen = 640;
+	e->h_screen = 380;
+	e->keydown = 125;
+	e->keyup = 126;
+	e->mousedown = 124;
+	e->mouseup = 123;
+	e->mousemove = 0;
+	e->expose = 12;
+	e->close = 17;
+	return (e);
+}
 
-    // Setup renderer
-    SDL_Renderer* renderer = NULL;
-    renderer =  SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED);
+int		handle_key(int key, t_env *e)
+{
+	if (key == e->keydown)
+		printf("down\n");
+	if (key == e->keyup)
+		printf("up\n");
+	if (key == e->mousedown)
+		printf("right\n");
+	if (key == e->mouseup)
+		printf("left\n");
+	if (key == e->mousemove)
+		printf("A\n");
+	if (key == e->expose)
+		printf("expose");
+	if (key == e->close)
+		exit(EXIT_FAILURE);
+	return (0);
+}
 
-    // Set render color to red ( background will be rendered in this color )
-    SDL_SetRenderDrawColor( renderer, 255, 0, 0, 255 );
+int main(void)
+{
+	t_env	*e;
 
-    // Clear winow
-    SDL_RenderClear( renderer );
-
-    // Creat a rect at pos ( 50, 50 ) that's 50 pixels wide and 50 pixels high.
-    SDL_Rect r;
-    r.x = 50;
-    r.y = 50;
-    r.w = 50;
-    r.h = 50;
-
-    // Set render color to blue ( rect will be rendered in this color )
-    SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-
-    // Render rect
-    SDL_RenderFillRect( renderer, &r );
-
-    // Render the rect to the screen
-    SDL_RenderPresent(renderer);
-
-    // Wait for 5 sec
-    SDL_Delay( 5000 );
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
-    return EXIT_SUCCESS;
+	e = init_e();
+	int y = 100;
+	if ((e->mlx_ptr = mlx_init()) == NULL)
+		return (EXIT_FAILURE);
+	if ((e->mlx_win = mlx_new_window(e->mlx_ptr, e->w_screen, e->h_screen, "Phileap")) == NULL)
+		return (EXIT_FAILURE);
+	while (y < 300)
+		mlx_pixel_put(e->mlx_ptr, e->mlx_win, 200, y++, 0xFFFFFF);
+	mlx_key_hook(e->mlx_win, handle_key, e);
+	mlx_loop(e->mlx_ptr);
+	return (EXIT_SUCCESS);
 }
